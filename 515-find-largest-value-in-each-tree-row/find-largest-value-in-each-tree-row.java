@@ -19,40 +19,31 @@ class Solution {
             return new LinkedList<>();
         }
         
-        Queue<Pair> queue = new LinkedList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
         List<Integer> max = new ArrayList<>();
 
-        queue.add(new Pair(root, 0));
+        queue.add(root);
         
         while (!queue.isEmpty()){
-            Pair popped = queue.remove();
+            int currentSize = queue.size();
+            int currMax = Integer.MIN_VALUE;
             
-            if (max.size() == popped.level){
-                max.add(popped.node.val);
-            }
-            else {
-                max.set(popped.level, Math.max(popped.node.val, max.get(popped.level)));
+            for (int i = 0; i < currentSize; i++){
+                TreeNode node = queue.remove();
+                currMax = Math.max(currMax, node.val);
+                
+                if (node.left != null){
+                    queue.add(node.left);
+                }
+                
+                if (node.right != null){
+                    queue.add(node.right);
+                }
             }
             
-            if (popped.node.left != null){
-                queue.add(new Pair(popped.node.left, popped.level + 1));
-            }
-            
-            if (popped.node.right != null){
-                queue.add(new Pair(popped.node.right, popped.level + 1));
-            }
+            max.add(currMax);
         }
         
         return max;
-    }
-}
-
-class Pair {
-    TreeNode node;
-    int level;
-    
-    Pair(TreeNode node, int level){
-        this.node = node;
-        this.level = level;
     }
 }
