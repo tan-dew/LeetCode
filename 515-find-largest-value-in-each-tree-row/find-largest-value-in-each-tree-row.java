@@ -15,35 +15,25 @@
  */
 class Solution {
     public List<Integer> largestValues(TreeNode root) {
-        if (root == null){
-            return new LinkedList<>();
-        }
-        
-        Queue<TreeNode> queue = new LinkedList<>();
         List<Integer> max = new ArrayList<>();
-
-        queue.add(root);
-        
-        while (!queue.isEmpty()){
-            int currentSize = queue.size();
-            int currMax = Integer.MIN_VALUE;
-            
-            for (int i = 0; i < currentSize; i++){
-                TreeNode node = queue.remove();
-                currMax = Math.max(currMax, node.val);
-                
-                if (node.left != null){
-                    queue.add(node.left);
-                }
-                
-                if (node.right != null){
-                    queue.add(node.right);
-                }
-            }
-            
-            max.add(currMax);
-        }
+        dfs(root, 0, max);
         
         return max;
+    }
+    
+    public void dfs(TreeNode node, int level, List<Integer> max){
+        if (node == null){
+            return;
+        }
+        
+        if(max.size() == level){
+            max.add(node.val);
+        }
+        else{
+            max.set(level, Math.max(max.get(level), node.val));
+        }
+        
+        dfs(node.left, level + 1, max);
+        dfs(node.right, level + 1, max);
     }
 }
