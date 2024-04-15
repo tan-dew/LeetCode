@@ -19,24 +19,24 @@ class Solution {
             return 0;
         }
         
-        return sum(root, "0");
+        return sum(root, new StringBuilder("0"));
     }
     
-    public int sum(TreeNode root, String s){
-        s += root.val;
+    public int sum(TreeNode root, StringBuilder sb){
+        sb.append(root.val);
         
         if (root.left == null && root.right != null){
-            return sum(root.right, s);
+            return sum(root.right, new StringBuilder(sb));
         }
         
         if (root.right == null && root.left != null){
-            return sum(root.left, s);
+            return sum(root.left, new StringBuilder(sb));
         }
         
         if (root.left != null && root.right != null){
-            return sum(root.left, s) + sum(root.right, s);
+            return sum(root.left, new StringBuilder(sb)) + sum(root.right, new StringBuilder(sb));
         }
         
-        return Integer.parseInt(s);
+        return Integer.parseInt(sb.toString());
     }
 }
