@@ -16,11 +16,11 @@
 class Solution {
     public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
         if (root1 == null){
-            return root2;
+            return clone(root2);
         }
         
         if (root2 == null){
-            return root1;
+            return clone(root1);
         }
         
         TreeNode root3 = new TreeNode(root1.val + root2.val);
@@ -28,5 +28,17 @@ class Solution {
         root3.right = mergeTrees(root1.right, root2.right);
         
         return root3;
+    }
+    
+    TreeNode clone(TreeNode root){
+        if (root == null){
+            return null;
+        }
+        
+        TreeNode clonedRoot = new TreeNode(root.val);
+        clonedRoot.left = clone(root.left);
+        clonedRoot.right = clone(root.right);
+        
+        return clonedRoot;
     }
 }
