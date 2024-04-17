@@ -24,8 +24,6 @@ class Solution {
         
         dfs(root, new StringBuilder());
         
-        Collections.sort(strs);
-        
         return strs.get(0);
     }
     
@@ -35,6 +33,11 @@ class Solution {
         
         if (root.left == null && root.right == null){
             strs.add(sb.reverse().toString());
+            
+            if (strs.size() == 2){
+                Collections.sort(strs);
+                strs.remove(1);
+            }
         }
         
         if (root.left != null){
