@@ -10,25 +10,45 @@
  */
 class Solution {
     public ListNode doubleIt(ListNode head) {
-        Stack<ListNode> stack = new Stack<>();
+        ListNode reversedHead = reverse(head);
+        ListNode doubleHead = doubleNumber(reversedHead);
         
-        ListNode curr = head;
+        return reverse(doubleHead);
+    }
+    
+    ListNode reverse(ListNode head){
+        ListNode prev = null;
+        ListNode current = head;
         
-        while(curr != null){
-            stack.push(curr);
-            curr = curr.next;
+        while (current != null){
+            ListNode next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
         }
         
+        return prev;
+    }
+    
+    ListNode doubleNumber(ListNode head){
+        ListNode current = head;
+        ListNode tail = current;
+        
         int carry = 0;
-        while(!stack.isEmpty()){
-            ListNode popped = stack.pop();
-            int doubledWithCarry = (popped.val * 2) + carry;
-            popped.val = doubledWithCarry % 10;
-            carry = doubledWithCarry / 10;
+        while(current != null){
+            int doubleWithCarry = current.val * 2 + carry;
+            current.val = doubleWithCarry % 10;
+            carry = doubleWithCarry / 10;
+            
+            if (current.next == null){
+                tail = current;
+            }
+            
+            current = current.next;
         }
         
         if (carry > 0){
-            head = new ListNode(carry, head);
+            tail.next = new ListNode(carry, null);
         }
         
         return head;
