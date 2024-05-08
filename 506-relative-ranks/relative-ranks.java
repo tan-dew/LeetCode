@@ -1,43 +1,40 @@
 class Solution {
     public String[] findRelativeRanks(int[] score) {
-        int[] copyScore = Arrays.copyOf(score, score.length);
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
         
-        Arrays.sort(copyScore);
-        reverse(copyScore);
+        for(int num: score){
+            maxHeap.add(num);
+        }
         
-        Map<Integer, String> placements = new HashMap<>();
+        Map<Integer, Integer> placements = new HashMap<>();
         
-        for (int i = 0; i < copyScore.length; i++){
-            if (i == 0){
-                placements.put(copyScore[i], "Gold Medal");
-            }
-            else if (i == 1){
-                placements.put(copyScore[i], "Silver Medal");
-            }
-            else if (i == 2){
-                placements.put(copyScore[i], "Bronze Medal");
-            }
-            else {
-                placements.put(copyScore[i], String.valueOf(i + 1));
-            }
+        for(int i = 0; i < score.length; i++){
+            placements.put(score[i], i);
         }
         
         String[] result = new String[score.length];
         
-        for (int i = 0; i < score.length; i++){
-            result[i] = placements.get(score[i]);
+        int place = 1;
+        while(!maxHeap.isEmpty()){
+            int curr = maxHeap.remove();
+            int index = placements.get(curr);
+            
+            if (place == 1){
+                result[index] = "Gold Medal";
+            }
+            else if (place == 2){
+                result[index] = "Silver Medal";
+            }
+            else if (place == 3){
+                result[index] = "Bronze Medal";
+            }
+            else {
+                result[index] = String.valueOf(place);
+            }
+            
+            place++;
         }
         
         return result;
-    }
-    
-    void reverse(int[] ara){
-        int halfLen = ara.length / 2;
-        
-        for (int i = 0; i < halfLen; i++){
-            int temp = ara[i];
-            ara[i] = ara[ara.length - 1 - i];
-            ara[ara.length - 1 - i] = temp;
-        }
     }
 }
